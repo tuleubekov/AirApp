@@ -1,38 +1,22 @@
 package com.berg.airapp.presentation.chat
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.berg.airapp.domain.model.Message
 import com.berg.airapp.domain.model.MessageRole
 import com.berg.airapp.domain.repository.ChatRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.berg.airapp.presentation.base.BaseViewModel
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-data class ChatUiState(
-    val messages: List<Message> = emptyList(),
-    val inputText: String = "",
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
-
 class ChatViewModel(
     private val repository: ChatRepository
-) : ViewModel() {
+) : BaseViewModel<ChatUiState>(ChatUiState()) {
 
-    private val _uiState = MutableStateFlow(ChatUiState())
-    val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
-
-    fun onInputChanged(text: String) {
-        _uiState.update { it.copy(inputText = text) }
-    }
+    fun onInputChanged(text: String) = updateState { it.copy(inputText = text) }
 
     fun sendMessage() {
-        val text = _uiState.value.inputText.trim()
-        if (text.isBlank() || _uiState.value.isLoading) return
+        val text = uiState.value.inputText.trim()
+        if (text.isBlank() || uiState.value.isLoading) return
 
         val userMessage = Message(
             id = UUID.randomUUID().toString(),
@@ -40,7 +24,7 @@ class ChatViewModel(
             content = text
         )
 
-        _uiState.update {
+        updateState {
             it.copy(
                 messages = it.messages + userMessage,
                 inputText = "",
@@ -50,10 +34,9 @@ class ChatViewModel(
         }
 
         viewModelScope.launch {
-            val allMessages = _uiState.value.messages
-            repository.sendMessage(allMessages)
+            repository.sendMessage(uiState.value.messages)
                 .onSuccess { response ->
-                    _uiState.update {
+                    updateState {
                         it.copy(
                             messages = it.messages + response,
                             isLoading = false
@@ -61,17 +44,10 @@ class ChatViewModel(
                     }
                 }
                 .onFailure { error ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = error.message ?: "Unknown error"
-                        )
-                    }
+                    updateState { it.copy(isLoading = false, error = error.toMessage()) }
                 }
         }
     }
 
-    fun dismissError() {
-        _uiState.update { it.copy(error = null) }
-    }
+    fun dismissError() = updateState { it.copy(error = null) }
 }
