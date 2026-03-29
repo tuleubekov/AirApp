@@ -1,11 +1,17 @@
 package com.berg.airapp.presentation.reasoning
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,9 +20,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,9 +41,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.berg.airapp.presentation.components.ErrorSnackbarEffect
@@ -98,7 +113,6 @@ fun ReasoningScreenContent(
                 .padding(innerPadding)
                 .imePadding()
         ) {
-            // Input + button
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -124,7 +138,6 @@ fun ReasoningScreenContent(
                 }
             }
 
-            // Tabs
             PrimaryTabRow(selectedTabIndex = uiState.selectedTab) {
                 TABS.forEachIndexed { index, title ->
                     Tab(
@@ -135,49 +148,173 @@ fun ReasoningScreenContent(
                 }
             }
 
-            // Tab content
-            val currentResponse = when (uiState.selectedTab) {
-                0 -> uiState.directResponse
-                1 -> uiState.stepByStepResponse
-                2 -> uiState.metaResponse
-                3 -> uiState.expertsResponse
-                else -> ""
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                contentAlignment = Alignment.TopStart
-            ) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 when {
                     uiState.isLoading -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(modifier = Modifier.size(32.dp))
-                        }
-                    }
-                    currentResponse.isNotEmpty() -> {
-                        Text(
-                            text = currentResponse,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.verticalScroll(rememberScrollState())
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(32.dp)
+                                .align(Alignment.Center)
                         )
                     }
                     else -> {
-                        Text(
-                            text = "Введи задачу и нажми «Решить»",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            when (uiState.selectedTab) {
+                                0 -> DirectTabContent(uiState.directResponse)
+                                1 -> StepByStepTabContent(
+                                    instruction = uiState.stepByStepInstruction,
+                                    response = uiState.stepByStepResponse
+                                )
+                                2 -> MetaTabContent(
+                                    generatedPrompt = uiState.metaGeneratedPrompt,
+                                    response = uiState.metaResponse
+                                )
+                                3 -> ExpertsTabContent(
+                                    instruction = uiState.expertsInstruction,
+                                    response = uiState.expertsResponse
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
+
+// ── Tab contents ──────────────────────────────────────────────────────────────
+
+@Composable
+private fun DirectTabContent(response: String) {
+    PromptCard(title = "Промпт") {
+        Text(
+            text = "Задача отправляется без дополнительных инструкций",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+    ResponseText(response)
+}
+
+@Composable
+private fun StepByStepTabContent(instruction: String, response: String) {
+    if (instruction.isNotEmpty()) {
+        PromptCard(title = "Добавленная инструкция") {
+            MonoText(instruction)
+        }
+    }
+    ResponseText(response)
+}
+
+@Composable
+private fun MetaTabContent(generatedPrompt: String, response: String) {
+    PromptCard(title = "Шаг 1 — Запрос на генерацию промпта") {
+        MonoText("Составь промпт для решения следующей задачи.\nВерни только промпт, без пояснений:\n\n[задача из поля выше]")
+    }
+    if (generatedPrompt.isNotEmpty()) {
+        PromptCard(title = "Шаг 2 — Сгенерированный промпт ✨") {
+            MonoText(generatedPrompt)
+        }
+    }
+    ResponseText(response)
+}
+
+@Composable
+private fun ExpertsTabContent(instruction: String, response: String) {
+    if (instruction.isNotEmpty()) {
+        PromptCard(title = "Инструкция для экспертов") {
+            MonoText(instruction)
+        }
+    }
+    ResponseText(response)
+}
+
+// ── Reusable components ───────────────────────────────────────────────────────
+
+@Composable
+private fun PromptCard(
+    title: String,
+    content: @Composable () -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(true) }
+
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp
+                    else Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (expanded) "Свернуть" else "Развернуть",
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
+                Column {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.2f))
+                    Box(modifier = Modifier.padding(12.dp)) {
+                        content()
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MonoText(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+        color = MaterialTheme.colorScheme.onSecondaryContainer
+    )
+}
+
+@Composable
+private fun ResponseText(response: String) {
+    if (response.isEmpty()) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Нажми «Решить», чтобы получить ответ",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+        )
+    } else {
+        Text(
+            text = response,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
 
 @Preview(showBackground = true, name = "Reasoning — empty")
 @Composable
@@ -194,17 +331,15 @@ private fun ReasoningEmptyPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Reasoning — with response")
+@Preview(showBackground = true, name = "Reasoning — meta tab with response")
 @Composable
-private fun ReasoningWithResponsePreview() {
+private fun ReasoningMetaPreview() {
     AirAppTheme {
         ReasoningScreenContent(
             uiState = ReasoningUiState(
-                selectedTab = 1,
-                directResponse = "У Анны было 8 яблок, у Бориса — 4.",
-                stepByStepResponse = "Шаг 1: Обозначим количество яблок у Бориса как x.\nШаг 2: У Анны вдвое больше — 2x.\nШаг 3: После передачи 3 яблок: Анна = 2x + 3 = 14.\nШаг 4: 2x = 11, x = 5.5 — нет целого решения, пересмотрим...",
-                metaResponse = "",
-                expertsResponse = ""
+                selectedTab = 2,
+                metaGeneratedPrompt = "Реши следующую математическую задачу, используя систему уравнений. Обозначь неизвестные переменными и найди их значения.",
+                metaResponse = "Пусть у Бориса x яблок. Тогда у Анны 2x яблок.\nПосле передачи: Анна = 2x + 3 = 14 → x = 5.5\n\nПересматриваем условие..."
             ),
             onTaskChanged = {},
             onTabSelected = {},
