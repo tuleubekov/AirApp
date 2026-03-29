@@ -15,13 +15,17 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
+    single<Json> {
+        Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
+    }
+
     single<HttpClient> {
         HttpClient(OkHttp) {
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                })
+                json(get<Json>())
             }
             install(Logging) {
                 level = LogLevel.BODY
@@ -29,7 +33,7 @@ val appModule = module {
         }
     }
 
-    single { AnthropicApi(get()) }
+    single { AnthropicApi(get(), get()) }
     single<ChatRepository> { ChatRepositoryImpl(get()) }
     viewModel { ChatViewModel(get()) }
 }

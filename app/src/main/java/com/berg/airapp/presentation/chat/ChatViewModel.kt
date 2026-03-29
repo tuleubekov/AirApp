@@ -5,6 +5,9 @@ import com.berg.airapp.domain.model.Message
 import com.berg.airapp.domain.model.MessageRole
 import com.berg.airapp.domain.repository.ChatRepository
 import com.berg.airapp.presentation.base.BaseViewModel
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -34,18 +37,39 @@ class ChatViewModel(
         }
 
         viewModelScope.launch {
-            repository.sendMessage(uiState.value.messages)
-                .onSuccess { response ->
+            repository.streamMessage(uiState.value.messages)
+                .onEach { chunk ->
                     updateState {
                         it.copy(
-                            messages = it.messages + response,
+                            streamingMessage = it.streamingMessage + chunk,
                             isLoading = false
                         )
                     }
                 }
-                .onFailure { error ->
-                    updateState { it.copy(isLoading = false, error = error.toMessage()) }
+                .onCompletion { cause ->
+                    if (cause == null) {
+                        val finalText = uiState.value.streamingMessage
+                        if (finalText.isNotEmpty()) {
+                            updateState {
+                                it.copy(
+                                    messages = it.messages + Message(
+                                        id = UUID.randomUUID().toString(),
+                                        role = MessageRole.ASSISTANT,
+                                        content = finalText
+                                    ),
+                                    streamingMessage = "",
+                                    isLoading = false
+                                )
+                            }
+                        }
+                    } else {
+                        updateState { it.copy(streamingMessage = "", isLoading = false) }
+                    }
                 }
+                .catch { error ->
+                    updateState { it.copy(error = error.toMessage()) }
+                }
+                .collect {}
         }
     }
 

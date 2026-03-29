@@ -1,7 +1,8 @@
 package com.berg.airapp.domain.repository
 
 import com.berg.airapp.domain.model.Message
+import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
-    suspend fun sendMessage(messages: List<Message>): Result<Message>
+    fun streamMessage(messages: List<Message>): Flow<String>
 }
