@@ -67,7 +67,7 @@ fun ChatScreenContent(
 
     LaunchedEffect(uiState.messages.size) {
         if (uiState.messages.isNotEmpty()) {
-            listState.animateScrollToItem(uiState.messages.size - 1)
+            listState.animateScrollToItem(0)
         }
     }
 
@@ -91,11 +91,9 @@ fun ChatScreenContent(
                 state = listState,
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                reverseLayout = true
             ) {
-                items(uiState.messages) { message ->
-                    MessageBubble(message = message)
-                }
                 if (uiState.streamingMessage.isNotEmpty()) {
                     item {
                         MessageBubble(
@@ -116,6 +114,9 @@ fun ChatScreenContent(
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
                         }
                     }
+                }
+                items(uiState.messages.reversed()) { message ->
+                    MessageBubble(message = message)
                 }
             }
 
