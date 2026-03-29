@@ -32,6 +32,10 @@ class AnthropicApi(
             header("anthropic-version", ANTHROPIC_VERSION)
             setBody(request)
         }.execute { response ->
+            if (response.status.value !in 200..299) {
+                val errorBody = response.body<String>()
+                throw Exception("API error ${response.status.value}: $errorBody")
+            }
             val channel = response.body<ByteReadChannel>()
             while (!channel.isClosedForRead) {
                 val line = channel.readUTF8Line() ?: break
