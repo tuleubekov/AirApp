@@ -96,6 +96,17 @@ fun ChatScreenContent(
                 items(uiState.messages) { message ->
                     MessageBubble(message = message)
                 }
+                if (uiState.streamingMessage.isNotEmpty()) {
+                    item {
+                        MessageBubble(
+                            message = Message(
+                                id = "streaming",
+                                role = MessageRole.ASSISTANT,
+                                content = uiState.streamingMessage
+                            )
+                        )
+                    }
+                }
                 if (uiState.isLoading) {
                     item {
                         Box(
