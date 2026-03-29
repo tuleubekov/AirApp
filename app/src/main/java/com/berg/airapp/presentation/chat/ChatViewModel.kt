@@ -47,20 +47,18 @@ class ChatViewModel(
                     }
                 }
                 .onCompletion { cause ->
-                    if (cause == null) {
-                        val finalText = uiState.value.streamingMessage
-                        if (finalText.isNotEmpty()) {
-                            updateState {
-                                it.copy(
-                                    messages = it.messages + Message(
-                                        id = UUID.randomUUID().toString(),
-                                        role = MessageRole.ASSISTANT,
-                                        content = finalText
-                                    ),
-                                    streamingMessage = "",
-                                    isLoading = false
-                                )
-                            }
+                    val finalText = uiState.value.streamingMessage
+                    if (cause == null && finalText.isNotEmpty()) {
+                        updateState {
+                            it.copy(
+                                messages = it.messages + Message(
+                                    id = UUID.randomUUID().toString(),
+                                    role = MessageRole.ASSISTANT,
+                                    content = finalText
+                                ),
+                                streamingMessage = "",
+                                isLoading = false
+                            )
                         }
                     } else {
                         updateState { it.copy(streamingMessage = "", isLoading = false) }
