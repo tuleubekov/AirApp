@@ -3,9 +3,11 @@ package com.berg.airapp.data.remote.api
 import com.berg.airapp.BuildConfig
 import com.berg.airapp.data.remote.dto.AnthropicRequest
 import com.berg.airapp.data.remote.dto.StreamEvent
+import com.berg.airapp.data.remote.dto.AnthropicResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.request.preparePost
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -23,6 +25,20 @@ class AnthropicApi(
     companion object {
         private const val BASE_URL = "https://api.anthropic.com/v1/messages"
         private const val ANTHROPIC_VERSION = "2023-06-01"
+    }
+
+    suspend fun sendMessage(request: AnthropicRequest): String {
+        val response = client.post(BASE_URL) {
+            contentType(ContentType.Application.Json)
+            header("x-api-key", BuildConfig.ANTHROPIC_API_KEY)
+            header("anthropic-version", ANTHROPIC_VERSION)
+            setBody(request)
+        }
+        if (response.status.value !in 200..299) {
+            val errorBody = response.body<String>()
+            throw Exception("API error ${response.status.value}: $errorBody")
+        }
+        return response.body<AnthropicResponse>().content.firstOrNull()?.text ?: ""
     }
 
     fun streamMessage(request: AnthropicRequest): Flow<String> = channelFlow {

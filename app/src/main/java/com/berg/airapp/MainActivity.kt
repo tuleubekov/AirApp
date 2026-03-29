@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.berg.airapp.presentation.chat.ChatScreen
+import com.berg.airapp.navigation.AppNavigation
 import com.berg.airapp.ui.theme.AirAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AirAppTheme {
-                ChatScreen()
+                AppNavigation()
             }
         }
     }
