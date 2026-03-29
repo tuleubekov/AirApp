@@ -16,7 +16,7 @@ class ChatRepositoryImpl(
         return runCatching {
             val response = api.sendMessage(
                 AnthropicRequest(
-                    model = "claude-opus-4-6",
+                    model = "claude-sonnet-4-6",
                     maxTokens = 1024,
                     messages = messages.map {
                         MessageDto(
