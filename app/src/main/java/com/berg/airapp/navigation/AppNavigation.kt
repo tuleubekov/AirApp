@@ -8,6 +8,7 @@ import com.berg.airapp.presentation.chat.ChatScreen
 import com.berg.airapp.presentation.comparison.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
 import com.berg.airapp.presentation.reasoning.ReasoningScreen
+import com.berg.airapp.presentation.temperature.TemperatureScreen
 
 @Composable
 fun AppNavigation() {
@@ -17,7 +18,8 @@ fun AppNavigation() {
             HomeScreen(
                 onOpenChat = { navController.navigate("chat") },
                 onOpenComparison = { navController.navigate("comparison") },
-                onOpenReasoning = { navController.navigate("reasoning") }
+                onOpenReasoning = { navController.navigate("reasoning") },
+                onOpenTemperature = { navController.navigate("temperature") }
             )
         }
         composable("chat") {
@@ -28,6 +30,9 @@ fun AppNavigation() {
         }
         composable("reasoning") {
             ReasoningScreen(onBack = { navController.popBackStack() })
+        }
+        composable("temperature") {
+            TemperatureScreen(onBack = { navController.popBackStack() })
         }
     }
 }
