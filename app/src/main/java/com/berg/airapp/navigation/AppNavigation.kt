@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.berg.airapp.presentation.chat.ChatScreen
 import com.berg.airapp.presentation.comparison.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
+import com.berg.airapp.presentation.reasoning.ReasoningScreen
 
 @Composable
 fun AppNavigation() {
@@ -15,7 +16,8 @@ fun AppNavigation() {
         composable("home") {
             HomeScreen(
                 onOpenChat = { navController.navigate("chat") },
-                onOpenComparison = { navController.navigate("comparison") }
+                onOpenComparison = { navController.navigate("comparison") },
+                onOpenReasoning = { navController.navigate("reasoning") }
             )
         }
         composable("chat") {
@@ -23,6 +25,9 @@ fun AppNavigation() {
         }
         composable("comparison") {
             ComparisonScreen(onBack = { navController.popBackStack() })
+        }
+        composable("reasoning") {
+            ReasoningScreen(onBack = { navController.popBackStack() })
         }
     }
 }
