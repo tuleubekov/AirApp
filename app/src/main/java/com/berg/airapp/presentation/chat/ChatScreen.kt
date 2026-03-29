@@ -24,7 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -40,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.berg.airapp.domain.model.Message
 import com.berg.airapp.domain.model.MessageRole
 import com.berg.airapp.presentation.components.ErrorSnackbarEffect
+import com.berg.airapp.presentation.components.ErrorSnackbarHost
 import com.berg.airapp.ui.theme.AirAppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -79,7 +79,7 @@ fun ChatScreenContent(
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("AirApp") }) },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { ErrorSnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
