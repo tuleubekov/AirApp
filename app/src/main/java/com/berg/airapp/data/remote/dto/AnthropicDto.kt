@@ -10,7 +10,8 @@ data class AnthropicRequest(
     val messages: List<MessageDto>,
     val stream: Boolean = false,
     val system: String? = null,
-    @SerialName("stop_sequences") val stopSequences: List<String>? = null
+    @SerialName("stop_sequences") val stopSequences: List<String>? = null,
+    val temperature: Double? = null
 )
 
 @Serializable

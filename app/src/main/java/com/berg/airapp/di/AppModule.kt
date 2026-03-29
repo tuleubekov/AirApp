@@ -4,12 +4,15 @@ import com.berg.airapp.data.remote.api.AnthropicApi
 import com.berg.airapp.data.repository.ChatRepositoryImpl
 import com.berg.airapp.data.repository.ComparisonRepositoryImpl
 import com.berg.airapp.data.repository.ReasoningRepositoryImpl
+import com.berg.airapp.data.repository.TemperatureRepositoryImpl
 import com.berg.airapp.domain.repository.ChatRepository
 import com.berg.airapp.domain.repository.ComparisonRepository
 import com.berg.airapp.domain.repository.ReasoningRepository
+import com.berg.airapp.domain.repository.TemperatureRepository
 import com.berg.airapp.presentation.chat.ChatViewModel
 import com.berg.airapp.presentation.comparison.ComparisonViewModel
 import com.berg.airapp.presentation.reasoning.ReasoningViewModel
+import com.berg.airapp.presentation.temperature.TemperatureViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
@@ -49,7 +52,9 @@ val appModule = module {
     single<ChatRepository> { ChatRepositoryImpl(get()) }
     single<ComparisonRepository> { ComparisonRepositoryImpl(get()) }
     single<ReasoningRepository> { ReasoningRepositoryImpl(get()) }
+    single<TemperatureRepository> { TemperatureRepositoryImpl(get()) }
     viewModel { ChatViewModel(get()) }
     viewModel { ComparisonViewModel(get()) }
     viewModel { ReasoningViewModel(get()) }
+    viewModel { TemperatureViewModel(get()) }
 }

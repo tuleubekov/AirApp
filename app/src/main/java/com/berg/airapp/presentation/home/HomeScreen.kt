@@ -26,7 +26,8 @@ import com.berg.airapp.ui.theme.AirAppTheme
 fun HomeScreen(
     onOpenChat: () -> Unit,
     onOpenComparison: () -> Unit,
-    onOpenReasoning: () -> Unit
+    onOpenReasoning: () -> Unit,
+    onOpenTemperature: () -> Unit
 ) {
     Scaffold(
         topBar = { TopAppBar(title = { Text("AirApp") }) }
@@ -70,6 +71,13 @@ fun HomeScreen(
             ) {
                 Text("День 3: Способы рассуждения")
             }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedButton(
+                onClick = onOpenTemperature,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("День 4: Температура")
+            }
         }
     }
 }
@@ -81,7 +89,8 @@ private fun HomeScreenPreview() {
         HomeScreen(
             onOpenChat = {},
             onOpenComparison = {},
-            onOpenReasoning = {}
+            onOpenReasoning = {},
+            onOpenTemperature = {}
         )
     }
 }
