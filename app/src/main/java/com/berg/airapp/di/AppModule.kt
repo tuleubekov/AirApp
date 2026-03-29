@@ -2,10 +2,14 @@ package com.berg.airapp.di
 
 import com.berg.airapp.data.remote.api.AnthropicApi
 import com.berg.airapp.data.repository.ChatRepositoryImpl
+import com.berg.airapp.data.repository.ComparisonRepositoryImpl
 import com.berg.airapp.domain.repository.ChatRepository
+import com.berg.airapp.domain.repository.ComparisonRepository
 import com.berg.airapp.presentation.chat.ChatViewModel
+import com.berg.airapp.presentation.comparison.ComparisonViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
@@ -30,10 +34,17 @@ val appModule = module {
             install(Logging) {
                 level = LogLevel.BODY
             }
+            install(HttpTimeout) {
+                requestTimeoutMillis = 120_000  // 2 минуты на весь запрос
+                connectTimeoutMillis = 15_000   // 15 сек на коннект
+                socketTimeoutMillis = 120_000   // 2 минуты на чтение ответа
+            }
         }
     }
 
     single { AnthropicApi(get(), get()) }
     single<ChatRepository> { ChatRepositoryImpl(get()) }
+    single<ComparisonRepository> { ComparisonRepositoryImpl(get()) }
     viewModel { ChatViewModel(get()) }
+    viewModel { ComparisonViewModel(get()) }
 }

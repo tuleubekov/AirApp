@@ -8,7 +8,9 @@ data class AnthropicRequest(
     val model: String,
     @SerialName("max_tokens") val maxTokens: Int,
     val messages: List<MessageDto>,
-    val stream: Boolean = false
+    val stream: Boolean = false,
+    val system: String? = null,
+    @SerialName("stop_sequences") val stopSequences: List<String>? = null
 )
 
 @Serializable
