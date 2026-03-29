@@ -25,7 +25,8 @@ import com.berg.airapp.ui.theme.AirAppTheme
 @Composable
 fun HomeScreen(
     onOpenChat: () -> Unit,
-    onOpenComparison: () -> Unit
+    onOpenComparison: () -> Unit,
+    onOpenReasoning: () -> Unit
 ) {
     Scaffold(
         topBar = { TopAppBar(title = { Text("AirApp") }) }
@@ -53,14 +54,21 @@ fun HomeScreen(
                 onClick = onOpenChat,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Open Chat")
+                Text("Чат")
             }
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedButton(
                 onClick = onOpenComparison,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("API Comparison")
+                Text("День 2: Формат ответа")
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedButton(
+                onClick = onOpenReasoning,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("День 3: Способы рассуждения")
             }
         }
     }
@@ -70,6 +78,10 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     AirAppTheme {
-        HomeScreen(onOpenChat = {}, onOpenComparison = {})
+        HomeScreen(
+            onOpenChat = {},
+            onOpenComparison = {},
+            onOpenReasoning = {}
+        )
     }
 }
