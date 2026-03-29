@@ -23,6 +23,7 @@ class ReasoningRepositoryImpl(
             )
         }
 
+        val stepByStepInstruction = "Решай пошагово, объясняя каждый шаг."
         val stepByStepJob = async {
             api.sendMessage(
                 AnthropicRequest(
@@ -31,7 +32,7 @@ class ReasoningRepositoryImpl(
                     messages = listOf(
                         MessageDto(
                             role = "user",
-                            content = "$task\n\nРешай пошагово, объясняя каждый шаг."
+                            content = "$task\n\n$stepByStepInstruction"
                         )
                     )
                 )
@@ -51,14 +52,25 @@ class ReasoningRepositoryImpl(
                     )
                 )
             )
-            api.sendMessage(
+            val answer = api.sendMessage(
                 AnthropicRequest(
                     model = MODEL,
                     maxTokens = 1024,
                     messages = listOf(MessageDto(role = "user", content = generatedPrompt))
                 )
             )
+            Pair(generatedPrompt, answer)
         }
+
+        val expertsInstruction = """
+            Реши эту задачу от лица трёх экспертов. Каждый эксперт даёт своё решение:
+
+            🔍 Аналитик — разбирает условие и строит уравнение
+            ⚙️ Инженер — решает практично и напрямую
+            🎯 Критик — проверяет ответ и указывает на возможные ошибки
+
+            Каждый эксперт выступает отдельно.
+        """.trimIndent()
 
         val expertsJob = async {
             api.sendMessage(
@@ -68,28 +80,23 @@ class ReasoningRepositoryImpl(
                     messages = listOf(
                         MessageDto(
                             role = "user",
-                            content = """
-                                Задача: $task
-
-                                Реши эту задачу от лица трёх экспертов. Каждый эксперт даёт своё решение:
-
-                                🔍 Аналитик — разбирает условие и строит уравнение
-                                ⚙️ Инженер — решает практично и напрямую
-                                🎯 Критик — проверяет ответ и указывает на возможные ошибки
-
-                                Каждый эксперт выступает отдельно.
-                            """.trimIndent()
+                            content = "Задача: $task\n\n$expertsInstruction"
                         )
                     )
                 )
             )
         }
 
+        val (metaGeneratedPrompt, metaAnswer) = metaJob.await()
+
         ReasoningResult(
             direct = directJob.await(),
             stepByStep = stepByStepJob.await(),
-            meta = metaJob.await(),
-            experts = expertsJob.await()
+            stepByStepInstruction = stepByStepInstruction,
+            meta = metaAnswer,
+            metaGeneratedPrompt = metaGeneratedPrompt,
+            experts = expertsJob.await(),
+            expertsInstruction = expertsInstruction
         )
     }
 

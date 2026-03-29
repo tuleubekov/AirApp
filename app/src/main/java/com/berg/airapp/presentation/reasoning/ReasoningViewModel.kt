@@ -24,6 +24,9 @@ class ReasoningViewModel(
                 stepByStepResponse = "",
                 metaResponse = "",
                 expertsResponse = "",
+                stepByStepInstruction = "",
+                metaGeneratedPrompt = "",
+                expertsInstruction = "",
                 error = null
             )
         }
@@ -37,7 +40,10 @@ class ReasoningViewModel(
                             directResponse = result.direct,
                             stepByStepResponse = result.stepByStep,
                             metaResponse = result.meta,
-                            expertsResponse = result.experts
+                            expertsResponse = result.experts,
+                            stepByStepInstruction = result.stepByStepInstruction,
+                            metaGeneratedPrompt = result.metaGeneratedPrompt,
+                            expertsInstruction = result.expertsInstruction
                         )
                     }
                 }

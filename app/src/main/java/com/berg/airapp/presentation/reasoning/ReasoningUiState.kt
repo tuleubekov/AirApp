@@ -8,9 +8,14 @@ data class ReasoningUiState(
     val task: String = DEFAULT_TASK,
     val isLoading: Boolean = false,
     val selectedTab: Int = 0,
+    // responses
     val directResponse: String = "",
     val stepByStepResponse: String = "",
     val metaResponse: String = "",
     val expertsResponse: String = "",
+    // prompts
+    val stepByStepInstruction: String = "",
+    val metaGeneratedPrompt: String = "",
+    val expertsInstruction: String = "",
     val error: String? = null
 )
