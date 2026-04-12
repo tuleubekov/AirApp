@@ -76,6 +76,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":feature:day-1-chat"))
     implementation(project(":feature:day-2-format"))
+    implementation(project(":feature:day-3-reasoning"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

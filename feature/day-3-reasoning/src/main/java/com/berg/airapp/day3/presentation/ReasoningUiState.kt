@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.reasoning
+package com.berg.airapp.day3.presentation
 
 const val DEFAULT_TASK =
     "У Анны вдвое больше яблок, чем у Бориса. Борис отдал 3 яблока Анне. " +

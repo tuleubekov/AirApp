@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.reasoning
+package com.berg.airapp.day3.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -322,25 +322,6 @@ private fun ReasoningEmptyPreview() {
     AirAppTheme {
         ReasoningScreenContent(
             uiState = ReasoningUiState(),
-            onTaskChanged = {},
-            onTabSelected = {},
-            onSolve = {},
-            onErrorDismissed = {},
-            onBack = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Reasoning — meta tab with response")
-@Composable
-private fun ReasoningMetaPreview() {
-    AirAppTheme {
-        ReasoningScreenContent(
-            uiState = ReasoningUiState(
-                selectedTab = 2,
-                metaGeneratedPrompt = "Реши следующую математическую задачу, используя систему уравнений. Обозначь неизвестные переменными и найди их значения.",
-                metaResponse = "Пусть у Бориса x яблок. Тогда у Анны 2x яблок.\nПосле передачи: Анна = 2x + 3 = 14 → x = 5.5\n\nПересматриваем условие..."
-            ),
             onTaskChanged = {},
             onTabSelected = {},
             onSolve = {},

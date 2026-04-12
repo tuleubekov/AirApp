@@ -1,8 +1,8 @@
-package com.berg.airapp.presentation.reasoning
+package com.berg.airapp.day3.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.berg.airapp.domain.repository.ReasoningRepository
 import com.berg.airapp.core.presentation.BaseViewModel
+import com.berg.airapp.day3.domain.ReasoningRepository
 import kotlinx.coroutines.launch
 
 class ReasoningViewModel(

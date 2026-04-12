@@ -1,4 +1,4 @@
-package com.berg.airapp.domain.repository
+package com.berg.airapp.day3.domain
 
 data class ReasoningResult(
     val direct: String,

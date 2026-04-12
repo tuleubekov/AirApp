@@ -8,7 +8,7 @@ import com.berg.airapp.day1.presentation.ChatScreen
 import com.berg.airapp.day2.presentation.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
 import com.berg.airapp.presentation.models.ModelsScreen
-import com.berg.airapp.presentation.reasoning.ReasoningScreen
+import com.berg.airapp.day3.presentation.ReasoningScreen
 import com.berg.airapp.presentation.temperature.TemperatureScreen
 
 @Composable
