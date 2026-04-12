@@ -39,9 +39,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.berg.airapp.presentation.components.ErrorSnackbarEffect
-import com.berg.airapp.presentation.components.ErrorSnackbarHost
-import com.berg.airapp.ui.theme.AirAppTheme
+import com.berg.airapp.core.presentation.ErrorSnackbarEffect
+import com.berg.airapp.core.presentation.ErrorSnackbarHost
+import com.berg.airapp.core.ui.theme.AirAppTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

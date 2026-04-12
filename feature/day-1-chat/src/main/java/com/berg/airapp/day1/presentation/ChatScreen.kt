@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.chat
+package com.berg.airapp.day1.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,11 +36,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.berg.airapp.domain.model.Message
-import com.berg.airapp.domain.model.MessageRole
-import com.berg.airapp.presentation.components.ErrorSnackbarEffect
-import com.berg.airapp.presentation.components.ErrorSnackbarHost
-import com.berg.airapp.ui.theme.AirAppTheme
+import com.berg.airapp.core.presentation.ErrorSnackbarEffect
+import com.berg.airapp.core.presentation.ErrorSnackbarHost
+import com.berg.airapp.core.ui.theme.AirAppTheme
+import com.berg.airapp.day1.domain.Message
+import com.berg.airapp.day1.domain.MessageRole
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -78,7 +78,7 @@ fun ChatScreenContent(
     )
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("AirApp") }) },
+        topBar = { TopAppBar(title = { Text("Чат") }) },
         snackbarHost = { ErrorSnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -197,48 +197,10 @@ private fun InputBar(
 
 @Preview(showBackground = true, name = "Chat — empty")
 @Composable
-private fun ChatScreenEmptyPreview() {
+private fun ChatEmptyPreview() {
     AirAppTheme {
         ChatScreenContent(
             uiState = ChatUiState(),
-            onInputChanged = {},
-            onSend = {},
-            onErrorDismissed = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Chat — with messages")
-@Composable
-private fun ChatScreenWithMessagesPreview() {
-    AirAppTheme {
-        ChatScreenContent(
-            uiState = ChatUiState(
-                messages = listOf(
-                    Message(id = "1", role = MessageRole.USER, content = "Привет! Как дела?"),
-                    Message(id = "2", role = MessageRole.ASSISTANT, content = "Привет! Всё отлично, готов помочь."),
-                    Message(id = "3", role = MessageRole.USER, content = "Напиши Hello World на Kotlin"),
-                ),
-                inputText = "Расскажи подробнее..."
-            ),
-            onInputChanged = {},
-            onSend = {},
-            onErrorDismissed = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Chat — loading")
-@Composable
-private fun ChatScreenLoadingPreview() {
-    AirAppTheme {
-        ChatScreenContent(
-            uiState = ChatUiState(
-                messages = listOf(
-                    Message(id = "1", role = MessageRole.USER, content = "Что такое coroutines?")
-                ),
-                isLoading = true
-            ),
             onInputChanged = {},
             onSend = {},
             onErrorDismissed = {}

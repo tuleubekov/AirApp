@@ -2,7 +2,7 @@ package com.berg.airapp.presentation.temperature
 
 import androidx.lifecycle.viewModelScope
 import com.berg.airapp.domain.repository.TemperatureRepository
-import com.berg.airapp.presentation.base.BaseViewModel
+import com.berg.airapp.core.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 
 class TemperatureViewModel(

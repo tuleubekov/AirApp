@@ -1,4 +1,4 @@
-package com.berg.airapp.ui.theme
+package com.berg.airapp.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

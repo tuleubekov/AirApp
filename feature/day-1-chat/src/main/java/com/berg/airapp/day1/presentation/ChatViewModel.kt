@@ -1,10 +1,11 @@
-package com.berg.airapp.presentation.chat
+package com.berg.airapp.day1.presentation
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.berg.airapp.domain.model.Message
-import com.berg.airapp.domain.model.MessageRole
-import com.berg.airapp.domain.repository.ChatRepository
-import com.berg.airapp.presentation.base.BaseViewModel
+import com.berg.airapp.core.presentation.BaseViewModel
+import com.berg.airapp.day1.domain.ChatRepository
+import com.berg.airapp.day1.domain.Message
+import com.berg.airapp.day1.domain.MessageRole
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -37,8 +38,10 @@ class ChatViewModel(
         }
 
         viewModelScope.launch {
+            Log.d("ChatViewModel", "▶ Запускаем стриминг, сообщений: ${uiState.value.messages.size}")
             repository.streamMessage(uiState.value.messages)
                 .onEach { chunk ->
+                    Log.d("ChatViewModel", "📦 Получен чанк: $chunk")
                     updateState {
                         it.copy(
                             streamingMessage = it.streamingMessage + chunk,
@@ -47,6 +50,7 @@ class ChatViewModel(
                     }
                 }
                 .onCompletion { cause ->
+                    Log.d("ChatViewModel", "✅ onCompletion, cause=$cause")
                     val finalText = uiState.value.streamingMessage
                     if (cause == null && finalText.isNotEmpty()) {
                         updateState {
@@ -65,7 +69,8 @@ class ChatViewModel(
                     }
                 }
                 .catch { error ->
-                    updateState { it.copy(error = error.toMessage()) }
+                    Log.e("ChatViewModel", "❌ Ошибка: ${error.message}", error)
+                    updateState { it.copy(error = error.toMessage(), isLoading = false) }
                 }
                 .collect {}
         }

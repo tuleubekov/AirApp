@@ -1,6 +1,6 @@
-package com.berg.airapp.presentation.chat
+package com.berg.airapp.day1.presentation
 
-import com.berg.airapp.domain.model.Message
+import com.berg.airapp.day1.domain.Message
 
 data class ChatUiState(
     val messages: List<Message> = emptyList(),

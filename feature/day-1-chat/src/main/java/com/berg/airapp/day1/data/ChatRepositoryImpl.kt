@@ -1,23 +1,23 @@
-package com.berg.airapp.data.repository
+package com.berg.airapp.day1.data
 
-import com.berg.airapp.data.remote.api.AnthropicApi
-import com.berg.airapp.data.remote.dto.AnthropicRequest
-import com.berg.airapp.data.remote.dto.MessageDto
-import com.berg.airapp.domain.model.Message
-import com.berg.airapp.domain.repository.ChatRepository
+import com.berg.airapp.day1.api.ChatApi
+import com.berg.airapp.day1.api.dto.ChatMessageDto
+import com.berg.airapp.day1.api.dto.ChatRequest
+import com.berg.airapp.day1.domain.ChatRepository
+import com.berg.airapp.day1.domain.Message
 import kotlinx.coroutines.flow.Flow
 
 class ChatRepositoryImpl(
-    private val api: AnthropicApi
+    private val api: ChatApi
 ) : ChatRepository {
 
     override fun streamMessage(messages: List<Message>): Flow<String> {
         return api.streamMessage(
-            AnthropicRequest(
+            ChatRequest(
                 model = "claude-sonnet-4-6",
                 maxTokens = 1024,
                 messages = messages.map {
-                    MessageDto(
+                    ChatMessageDto(
                         role = it.role.name.lowercase(),
                         content = it.content
                     )

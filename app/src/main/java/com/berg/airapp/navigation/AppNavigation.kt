@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.berg.airapp.presentation.chat.ChatScreen
+import com.berg.airapp.day1.presentation.ChatScreen
 import com.berg.airapp.presentation.comparison.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
 import com.berg.airapp.presentation.models.ModelsScreen

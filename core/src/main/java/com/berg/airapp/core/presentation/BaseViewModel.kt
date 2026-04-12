@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.base
+package com.berg.airapp.core.presentation
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

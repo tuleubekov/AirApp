@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.components
+package com.berg.airapp.core.presentation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHost

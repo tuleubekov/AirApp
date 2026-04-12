@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "AirApp"
 include(":app")
+include(":core")
+include(":feature:day-1-chat")

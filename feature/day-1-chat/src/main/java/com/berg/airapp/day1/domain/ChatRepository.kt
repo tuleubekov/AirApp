@@ -1,6 +1,5 @@
-package com.berg.airapp.domain.repository
+package com.berg.airapp.day1.domain
 
-import com.berg.airapp.domain.model.Message
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {

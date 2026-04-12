@@ -73,6 +73,9 @@ dependencies {
     // Serialization
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(project(":core"))
+    implementation(project(":feature:day-1-chat"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
