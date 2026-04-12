@@ -24,7 +24,14 @@ data class MessageDto(
 data class AnthropicResponse(
     val id: String,
     val content: List<ContentBlock>,
-    val role: String
+    val role: String,
+    val usage: UsageDto? = null
+)
+
+@Serializable
+data class UsageDto(
+    @SerialName("input_tokens") val inputTokens: Int = 0,
+    @SerialName("output_tokens") val outputTokens: Int = 0
 )
 
 @Serializable

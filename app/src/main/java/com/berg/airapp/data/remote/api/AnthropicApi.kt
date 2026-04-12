@@ -41,6 +41,20 @@ class AnthropicApi(
         return response.body<AnthropicResponse>().content.firstOrNull()?.text ?: ""
     }
 
+    suspend fun sendMessageFull(request: AnthropicRequest): AnthropicResponse {
+        val response = client.post(BASE_URL) {
+            contentType(ContentType.Application.Json)
+            header("x-api-key", BuildConfig.ANTHROPIC_API_KEY)
+            header("anthropic-version", ANTHROPIC_VERSION)
+            setBody(request)
+        }
+        if (response.status.value !in 200..299) {
+            val errorBody = response.body<String>()
+            throw Exception("API error ${response.status.value}: $errorBody")
+        }
+        return response.body<AnthropicResponse>()
+    }
+
     fun streamMessage(request: AnthropicRequest): Flow<String> = channelFlow {
         client.preparePost(BASE_URL) {
             contentType(ContentType.Application.Json)

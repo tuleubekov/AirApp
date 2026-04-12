@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.berg.airapp.presentation.chat.ChatScreen
 import com.berg.airapp.presentation.comparison.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
+import com.berg.airapp.presentation.models.ModelsScreen
 import com.berg.airapp.presentation.reasoning.ReasoningScreen
 import com.berg.airapp.presentation.temperature.TemperatureScreen
 
@@ -19,7 +20,8 @@ fun AppNavigation() {
                 onOpenChat = { navController.navigate("chat") },
                 onOpenComparison = { navController.navigate("comparison") },
                 onOpenReasoning = { navController.navigate("reasoning") },
-                onOpenTemperature = { navController.navigate("temperature") }
+                onOpenTemperature = { navController.navigate("temperature") },
+                onOpenModels = { navController.navigate("models") }
             )
         }
         composable("chat") {
@@ -33,6 +35,9 @@ fun AppNavigation() {
         }
         composable("temperature") {
             TemperatureScreen(onBack = { navController.popBackStack() })
+        }
+        composable("models") {
+            ModelsScreen(onBack = { navController.popBackStack() })
         }
     }
 }
