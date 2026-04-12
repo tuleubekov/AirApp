@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.comparison
+package com.berg.airapp.day2.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -79,7 +79,7 @@ fun ComparisonScreenContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("API Comparison") },
+                title = { Text("День 2: Формат ответа") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -207,24 +207,6 @@ private fun ComparisonEmptyPreview() {
     AirAppTheme {
         ComparisonScreenContent(
             uiState = ComparisonUiState(),
-            onPromptChanged = {},
-            onCompare = {},
-            onErrorDismissed = {},
-            onBack = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Comparison — with responses")
-@Composable
-private fun ComparisonWithResponsesPreview() {
-    AirAppTheme {
-        ComparisonScreenContent(
-            uiState = ComparisonUiState(
-                prompt = "Что такое корутины?",
-                responseWithout = "Корутины — это легковесные потоки выполнения в Kotlin, которые позволяют писать асинхронный код в синхронном стиле.",
-                responseWith = """{"answer": "Корутины — это легковесные потоки."}"""
-            ),
             onPromptChanged = {},
             onCompare = {},
             onErrorDismissed = {},

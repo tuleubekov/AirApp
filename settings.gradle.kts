@@ -23,3 +23,4 @@ rootProject.name = "AirApp"
 include(":app")
 include(":core")
 include(":feature:day-1-chat")
+include(":feature:day-2-format")

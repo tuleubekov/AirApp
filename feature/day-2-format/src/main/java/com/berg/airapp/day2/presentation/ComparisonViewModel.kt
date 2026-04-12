@@ -1,8 +1,8 @@
-package com.berg.airapp.presentation.comparison
+package com.berg.airapp.day2.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.berg.airapp.domain.repository.ComparisonRepository
 import com.berg.airapp.core.presentation.BaseViewModel
+import com.berg.airapp.day2.domain.ComparisonRepository
 import kotlinx.coroutines.launch
 
 class ComparisonViewModel(
@@ -16,23 +16,14 @@ class ComparisonViewModel(
         if (prompt.isBlank() || uiState.value.isLoading) return
 
         updateState {
-            it.copy(
-                isLoading = true,
-                responseWithout = "",
-                responseWith = "",
-                error = null
-            )
+            it.copy(isLoading = true, responseWithout = "", responseWith = "", error = null)
         }
 
         viewModelScope.launch {
             runCatching { repository.compareResponses(prompt) }
                 .onSuccess { (without, with) ->
                     updateState {
-                        it.copy(
-                            isLoading = false,
-                            responseWithout = without,
-                            responseWith = with
-                        )
+                        it.copy(isLoading = false, responseWithout = without, responseWith = with)
                     }
                 }
                 .onFailure { error ->

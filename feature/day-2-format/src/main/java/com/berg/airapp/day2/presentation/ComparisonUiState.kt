@@ -1,4 +1,4 @@
-package com.berg.airapp.presentation.comparison
+package com.berg.airapp.day2.presentation
 
 data class ComparisonUiState(
     val prompt: String = "",
