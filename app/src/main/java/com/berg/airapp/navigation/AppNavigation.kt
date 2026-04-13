@@ -7,9 +7,9 @@ import androidx.navigation.compose.rememberNavController
 import com.berg.airapp.day1.presentation.ChatScreen
 import com.berg.airapp.day2.presentation.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
-import com.berg.airapp.presentation.models.ModelsScreen
+import com.berg.airapp.day5.presentation.ModelsScreen
 import com.berg.airapp.day3.presentation.ReasoningScreen
-import com.berg.airapp.presentation.temperature.TemperatureScreen
+import com.berg.airapp.day4.presentation.TemperatureScreen
 
 @Composable
 fun AppNavigation() {

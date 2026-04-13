@@ -1,16 +1,11 @@
 package com.berg.airapp.di
 
 import com.berg.airapp.BuildConfig
-import com.berg.airapp.data.remote.api.AnthropicApi
-import com.berg.airapp.data.repository.ModelsRepositoryImpl
-import com.berg.airapp.data.repository.TemperatureRepositoryImpl
 import com.berg.airapp.day1.di.chatModule
 import com.berg.airapp.day2.di.comparisonModule
 import com.berg.airapp.day3.di.reasoningModule
-import com.berg.airapp.domain.repository.ModelsRepository
-import com.berg.airapp.domain.repository.TemperatureRepository
-import com.berg.airapp.presentation.models.ModelsViewModel
-import com.berg.airapp.presentation.temperature.TemperatureViewModel
+import com.berg.airapp.day4.di.temperatureModule
+import com.berg.airapp.day5.di.modelsModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
@@ -19,7 +14,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
@@ -45,17 +39,13 @@ val appModule = module {
             }
         }
     }
-
-    single { AnthropicApi(get(), get()) }
-    single<TemperatureRepository> { TemperatureRepositoryImpl(get()) }
-    single<ModelsRepository> { ModelsRepositoryImpl(get()) }
-    viewModel { TemperatureViewModel(get()) }
-    viewModel { ModelsViewModel(get()) }
 }
 
 val allModules = listOf(
     appModule,
     chatModule(BuildConfig.ANTHROPIC_API_KEY),
     comparisonModule(BuildConfig.ANTHROPIC_API_KEY),
-    reasoningModule(BuildConfig.ANTHROPIC_API_KEY)
+    reasoningModule(BuildConfig.ANTHROPIC_API_KEY),
+    temperatureModule(BuildConfig.ANTHROPIC_API_KEY),
+    modelsModule(BuildConfig.ANTHROPIC_API_KEY)
 )
