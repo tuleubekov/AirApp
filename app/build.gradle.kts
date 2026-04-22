@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":feature:day-3-reasoning"))
     implementation(project(":feature:day-4-temperature"))
     implementation(project(":feature:day-5-models"))
+    implementation(project(":feature:day-6-agent"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

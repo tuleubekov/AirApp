@@ -6,6 +6,7 @@ import com.berg.airapp.day2.di.comparisonModule
 import com.berg.airapp.day3.di.reasoningModule
 import com.berg.airapp.day4.di.temperatureModule
 import com.berg.airapp.day5.di.modelsModule
+import com.berg.airapp.day6.di.agentModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
@@ -47,5 +48,6 @@ val allModules = listOf(
     comparisonModule(BuildConfig.ANTHROPIC_API_KEY),
     reasoningModule(BuildConfig.ANTHROPIC_API_KEY),
     temperatureModule(BuildConfig.ANTHROPIC_API_KEY),
-    modelsModule(BuildConfig.ANTHROPIC_API_KEY)
+    modelsModule(BuildConfig.ANTHROPIC_API_KEY),
+    agentModule(BuildConfig.ANTHROPIC_API_KEY)
 )
