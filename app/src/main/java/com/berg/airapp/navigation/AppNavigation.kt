@@ -9,6 +9,7 @@ import com.berg.airapp.day2.presentation.ComparisonScreen
 import com.berg.airapp.presentation.home.HomeScreen
 import com.berg.airapp.day5.presentation.ModelsScreen
 import com.berg.airapp.day6.presentation.AgentScreen
+import com.berg.airapp.day7.presentation.MemoryScreen
 import com.berg.airapp.day3.presentation.ReasoningScreen
 import com.berg.airapp.day4.presentation.TemperatureScreen
 
@@ -23,7 +24,8 @@ fun AppNavigation() {
                 onOpenReasoning = { navController.navigate("reasoning") },
                 onOpenTemperature = { navController.navigate("temperature") },
                 onOpenModels = { navController.navigate("models") },
-                onOpenAgent = { navController.navigate("agent") }
+                onOpenAgent = { navController.navigate("agent") },
+                onOpenMemory = { navController.navigate("memory") }
             )
         }
         composable("chat") {
@@ -43,6 +45,9 @@ fun AppNavigation() {
         }
         composable("agent") {
             AgentScreen(onBack = { navController.popBackStack() })
+        }
+        composable("memory") {
+            MemoryScreen(onBack = { navController.popBackStack() })
         }
     }
 }

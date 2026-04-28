@@ -29,7 +29,8 @@ fun HomeScreen(
     onOpenReasoning: () -> Unit,
     onOpenTemperature: () -> Unit,
     onOpenModels: () -> Unit,
-    onOpenAgent: () -> Unit
+    onOpenAgent: () -> Unit,
+    onOpenMemory: () -> Unit
 ) {
     Scaffold(
         topBar = { TopAppBar(title = { Text("AirApp") }) }
@@ -94,6 +95,13 @@ fun HomeScreen(
             ) {
                 Text("День 6: Первый агент")
             }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedButton(
+                onClick = onOpenMemory,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("День 7: Агент с памятью")
+            }
         }
     }
 }
@@ -108,7 +116,8 @@ private fun HomeScreenPreview() {
             onOpenReasoning = {},
             onOpenTemperature = {},
             onOpenModels = {},
-            onOpenAgent = {}
+            onOpenAgent = {},
+            onOpenMemory = {}
         )
     }
 }
